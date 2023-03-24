@@ -25,33 +25,5 @@ def index():
 	return render_template('index.html')
 
 
-@app.route('/extract',methods=["GET","POST"])
-def extract():
-	if request.method == 'POST':
-		raw_text = request.form['rawtext']
-		docx = nlp(raw_text)
-		colors = {"Governing Law": "#92a8d1", "Assignment": "#99c9ff", "Parties": "#d0ff00", "Term": "#bc066a",
-				  "Pricing": "#f86749", "Notices": "#468468"}
-		options = {"spans_key": "sentences", "colors": colors}
-		html = displacy.render(docx,style="span", options=options)
-		html = html.replace("\n\n","\n")
-		result = HTML_WRAPPER.format(html)
-
-	return render_template('result.html',rawtext=raw_text,result=result)
-
-
-@app.route('/previewer')
-def previewer():
-	return render_template('previewer.html')
-
-@app.route('/preview',methods=["GET","POST"])
-def preview():
-	if request.method == 'POST':
-		newtext = request.form['newtext']
-		result = newtext
-
-	return render_template('preview.html',newtext=newtext,result=result)
-
-
 if __name__ == '__main__':
 	app.run(debug=True)
